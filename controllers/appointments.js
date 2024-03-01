@@ -74,7 +74,7 @@ exports.addAppointment = async (req, res, next) => {
 
         const coworkingspace = await CoWorkingSpace.findById(req.params.coworkingspaceId);
 
-        if(!hospital) {
+        if(!coworkingspace) {
             return res.status(404).json({
                 success: false, 
                 message: `No coworkingspace with the id of ${req.params.coworkingspaceId}`

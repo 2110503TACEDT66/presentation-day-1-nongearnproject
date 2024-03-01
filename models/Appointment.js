@@ -7,13 +7,13 @@ const AppointmentSchema  = new mongoose.Schema({
     },
     user:{
         type:mongoose.Schema.ObjectId,
-        ref:'User',
-        required:true
+        ref: 'User',
+        required: true
     },
     coworkingspace:{
-        type:mongoose.Schema.ObjectId,
+        type: mongoose.Schema.ObjectId,
         ref: 'CoWorkingSpace',
-        required:true
+        required: true
     },
     createAt: {
         type: Date,
@@ -21,4 +21,4 @@ const AppointmentSchema  = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Appointment',AppointmentSchema)
+module.exports = mongoose.model('Appointment', AppointmentSchema)
