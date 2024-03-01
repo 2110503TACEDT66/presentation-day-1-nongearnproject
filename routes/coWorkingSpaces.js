@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
+const {protect,authorize} = require('../middleware/auth');
+
 const {getCoWorkingSpaces, getCoWorkingSpace, updateCoWorkingSpace, deleteCoWorkingSpace, createCoWorkingSpace} = require('../controllers/coWorkingSpaces')
 
-router.route('/').get(getCoWorkingSpaces).post(createCoWorkingSpace)
-router.route('/:id').get(getCoWorkingSpace).put(updateCoWorkingSpace).delete(deleteCoWorkingSpace)
+router.route('/').get(getCoWorkingSpaces).post(protect,authorize('admin'),createCoWorkingSpace)
+router.route('/:id').get(getCoWorkingSpace).put(protect,authorize('admin'),updateCoWorkingSpace).delete(protect,authorize('admin'),deleteCoWorkingSpace)
 
 module.exports = router;
