@@ -7,19 +7,19 @@ exports.getAppointments = async (req, res, next) => {
     if(req.user.role !== 'admin') {
         query = Appointment.find({user: req.user.id}).populate({
             path: 'coworkingspace',
-            select: 'name province tel'
+            select: 'name tel address'
         });
     } else {
         if (req.params.coworkingspaceId) {
             console.log(req.params.coworkingspaceId);
             query = Appointment.find({coworkingspace: req.params.coworkingspaceId}).populate({
                 path: 'coworkingspace',
-                select: 'name province tel'
+                select: 'name tel address'
             });
         } else {
             query = Appointment.find().populate({
                 path: 'coworkingspace',
-                select: 'name province tel'
+                select: 'name tel address'
             });
         }
     }
