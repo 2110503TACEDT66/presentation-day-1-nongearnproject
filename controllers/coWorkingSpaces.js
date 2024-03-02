@@ -38,9 +38,9 @@ exports.getCoWorkingSpaces = async (req, res, next) => {
         //EXE query
         const coworkingspace = await query;
         //Pagination result
-        const pagination={};
+        const pagination = {};
         if(endIndex < total){
-            pagination.next={
+            pagination.next = {
                 page: page + 1,
                 limit
             }
@@ -64,7 +64,7 @@ exports.getCoWorkingSpaces = async (req, res, next) => {
     }
 };
 
-exports.getCoWorkingSpace= async (req,res,next)=>{
+exports.getCoWorkingSpace = async (req,res,next)=>{
     
     try {
         const coworkingspace = await CoWorkingSpace.findById(req.params.id);
