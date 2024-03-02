@@ -30,7 +30,7 @@ const CoWorkingSpaceSchema = new mongoose.Schema({
 
 //Cascade delete appointments when a hospital is deleted
 CoWorkingSpaceSchema.pre('deleteOne', {document: true, query: false}, async function (next) {
-    console.log(`Appointments being removed from coworkingspace ${this_id}`);
+    console.log(`Appointments being removed from coworkingspace ${this._id}`);
     await this.model('Appointment').deleteMany({coworkingspace: this._id});
     next();
 });
