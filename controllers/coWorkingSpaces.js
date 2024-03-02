@@ -14,7 +14,7 @@ exports.getCoWorkingSpaces = async (req, res, next) => {
         //Create operators (gt gte etc.)
         queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`); 
         //finding resource]
-        query = CoWorkingSpace.find(JSON.parse(queryStr)).populate('appointments'); 
+        query = CoWorkingSpace.find(JSON.parse(queryStr)).populate('bookings'); 
         //Select Fields
         if(req.query.select) {
             const fields = req.query.select.split(',').join(' ');
@@ -64,8 +64,7 @@ exports.getCoWorkingSpaces = async (req, res, next) => {
     }
 };
 
-exports.getCoWorkingSpace = async (req,res,next)=>{
-    
+exports.getCoWorkingSpace = async (req,res,next) => {
     try {
         const coworkingspace = await CoWorkingSpace.findById(req.params.id);
 
