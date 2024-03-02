@@ -127,7 +127,7 @@ exports.deleteCoWorkingSpace = async (req, res, next) => {
         if(!coworkingspace) {
             return res.status(400).json({
                 success: false,
-                message: "there's no coworkingspace"
+                message: "There's no coworkingspace"
             });
         }
         await coworkingspace.deleteOne();
@@ -136,9 +136,10 @@ exports.deleteCoWorkingSpace = async (req, res, next) => {
             data: {}
         });
     } catch (err) {
+        console.error(err); // Log the actual error for debugging
         res.status(400).json({
             success: false,
-            message: "catch err"
+            message: "An error occurred"
         });
     }
 };

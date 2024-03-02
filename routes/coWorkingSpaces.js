@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {getCoWorkingSpaces, getCoWorkingSpace, createCoWorkingSpace, updateCoWorkingSpace, deleteCoWorkingSpace} = require('../controllers/coworkingspaces');
+const {getCoWorkingSpaces, getCoWorkingSpace, createCoWorkingSpace, updateCoWorkingSpace, deleteCoWorkingSpace} = require('../controllers/coworkingspaces')
 
 const appointmentRouter = require('./appointments');
 

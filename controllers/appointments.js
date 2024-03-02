@@ -70,22 +70,24 @@ exports.getAppointment = async (req, res, next) => {
 
 exports.addAppointment = async (req, res, next) => {
     try {
+
         req.body.coworkingspace = req.params.coworkingspaceId;
 
         const coworkingspace = await CoWorkingSpace.findById(req.params.coworkingspaceId);
 
-        if(!coworkingspace) {
+
+        if (!coworkingspace) {
             return res.status(404).json({
-                success: false, 
+                success: false,
                 message: `No coworkingspace with the id of ${req.params.coworkingspaceId}`
             });
         }
-        
+
         req.body.user = req.user.id;
 
-        const existedAppointments = await Appointment.find({user: req.user.id});
+        const existedAppointments = await Appointment.find({ user: req.user.id });
 
-        if(existedAppointments.length >= 3 && req.user.role != 'admin') {
+        if (existedAppointments.length >= 3 && req.user.role !== 'admin') {
             return res.status(400).json({
                 success: false,
                 message: `The user with ID ${req.user.id} has already made 3 appointments`
@@ -98,7 +100,7 @@ exports.addAppointment = async (req, res, next) => {
             success: true,
             data: appointment
         });
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         return res.status(500).json({
             success: false,
@@ -106,6 +108,7 @@ exports.addAppointment = async (req, res, next) => {
         });
     }
 }
+
 
 exports.updateAppointment = async (req, res, next) => {
     try {
