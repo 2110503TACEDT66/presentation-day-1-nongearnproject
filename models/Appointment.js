@@ -1,21 +1,21 @@
 const mongoose = require('mongoose');
 
-const AppointmentSchema  = new mongoose.Schema({
+const AppointmentSchema = new mongoose.Schema({
     apptDate: {
         type: Date,
-        required:true
+        required: true
     },
-    user:{
-        type:mongoose.Schema.ObjectId,
+    user: {
+        type: mongoose.Schema.ObjectId,
         ref: 'User',
         required: true
     },
-    coworkingspace:{
+    coworkingspace: {
         type: mongoose.Schema.ObjectId,
         ref: 'CoWorkingSpace',
         required: true
     },
-    createAt: {
+    createdAt: {
         type: Date,
         default: Date.now
     }

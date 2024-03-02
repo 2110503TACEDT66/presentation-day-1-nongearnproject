@@ -70,7 +70,7 @@ exports.getAppointment = async (req, res, next) => {
 
 exports.addAppointment = async (req, res, next) => {
     try {
-        req.body.hospital = req.params.coworkingspaceId;
+        req.body.coworkingspace = req.params.coworkingspaceId;
 
         const coworkingspace = await CoWorkingSpace.findById(req.params.coworkingspaceId);
 
@@ -80,7 +80,7 @@ exports.addAppointment = async (req, res, next) => {
                 message: `No coworkingspace with the id of ${req.params.coworkingspaceId}`
             });
         }
-
+        
         req.body.user = req.user.id;
 
         const existedAppointments = await Appointment.find({user: req.user.id});
