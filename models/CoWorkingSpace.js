@@ -28,16 +28,16 @@ const CoWorkingSpaceSchema = new mongoose.Schema({
     toObject: {virtuals: true}
 });
 
-//Cascade delete appointments when a hospital is deleted
+//Cascade delete bookings when a coworkingspace is deleted
 CoWorkingSpaceSchema.pre('deleteOne', {document: true, query: false}, async function (next) {
-    console.log(`Appointments being removed from coworkingspace ${this._id}`);
-    await this.model('Appointment').deleteMany({coworkingspace: this._id});
+    console.log(`Bookings being removed from coworkingspace ${this._id}`);
+    await this.model('Booking').deleteMany({coworkingspace: this._id});
     next();
 });
 
 //Reverse popultae with virtuals
-CoWorkingSpaceSchema.virtual('appointments', {
-    ref: 'Appointment',
+CoWorkingSpaceSchema.virtual('bookings', {
+    ref: 'Booking',
     localField: '_id',
     foreignField: 'coworkingspace',
     justOne: false

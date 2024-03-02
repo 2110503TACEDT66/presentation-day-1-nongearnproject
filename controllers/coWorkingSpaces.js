@@ -14,7 +14,7 @@ exports.getCoWorkingSpaces = async (req, res, next) => {
         //Create operators (gt gte etc.)
         queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`); 
         //finding resource]
-        query = CoWorkingSpace.find(JSON.parse(queryStr)).populate('appointments'); 
+        query = CoWorkingSpace.find(JSON.parse(queryStr)).populate('bookings'); 
         //Select Fields
         if(req.query.select) {
             const fields = req.query.select.split(',').join(' ');
@@ -38,9 +38,9 @@ exports.getCoWorkingSpaces = async (req, res, next) => {
         //EXE query
         const coworkingspace = await query;
         //Pagination result
-        const pagination={};
+        const pagination = {};
         if(endIndex < total){
-            pagination.next={
+            pagination.next = {
                 page: page + 1,
                 limit
             }
@@ -64,8 +64,7 @@ exports.getCoWorkingSpaces = async (req, res, next) => {
     }
 };
 
-exports.getCoWorkingSpace= async (req,res,next)=>{
-    
+exports.getCoWorkingSpace = async (req,res,next) => {
     try {
         const coworkingspace = await CoWorkingSpace.findById(req.params.id);
 
@@ -127,7 +126,7 @@ exports.deleteCoWorkingSpace = async (req, res, next) => {
         if(!coworkingspace) {
             return res.status(400).json({
                 success: false,
-                message: "there's no coworkingspace"
+                message: "There's no coworkingspace"
             });
         }
         await coworkingspace.deleteOne();
@@ -136,9 +135,10 @@ exports.deleteCoWorkingSpace = async (req, res, next) => {
             data: {}
         });
     } catch (err) {
+        console.error(err); // Log the actual error for debugging
         res.status(400).json({
             success: false,
-            message: "catch err"
+            message: "An error occurred"
         });
     }
 };

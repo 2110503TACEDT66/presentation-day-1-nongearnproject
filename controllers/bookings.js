@@ -1,23 +1,23 @@
-const Appointment = require('../models/Appointment');
+const Booking = require('../models/Booking');
 const CoWorkingSpace = require('../models/CoWorkingSpace');
 
-exports.getAppointments = async (req, res, next) => {
+exports.getBookings = async (req, res, next) => {
     let query;
 
     if(req.user.role !== 'admin') {
-        query = Appointment.find({user: req.user.id}).populate({
+        query = Booking.find({user: req.user.id}).populate({
             path: 'coworkingspace',
             select: 'name tel address'
         });
     } else {
         if (req.params.coworkingspaceId) {
             console.log(req.params.coworkingspaceId);
-            query = Appointment.find({coworkingspace: req.params.coworkingspaceId}).populate({
+            query = Booking.find({coworkingspace: req.params.coworkingspaceId}).populate({
                 path: 'coworkingspace',
                 select: 'name tel address'
             });
         } else {
-            query = Appointment.find().populate({
+            query = Booking.find().populate({
                 path: 'coworkingspace',
                 select: 'name tel address'
             });
@@ -25,136 +25,138 @@ exports.getAppointments = async (req, res, next) => {
     }
 
     try {
-        const appointments = await query;
+        const bookings = await query;
 
         res.status(200).json({
             success: true,
-            count: appointments.length,
-            data: appointments
+            count: bookings.length,
+            data: bookings
         });
     } catch(err) {
         console.log(err);
         return res.status(500).json({
             success: false,
-            message: "Cannot find Appointment"
+            message: "Cannot find Booking"
         });
     }
 }
 
-exports.getAppointment = async (req, res, next) => {
+exports.getBooking = async (req, res, next) => {
     try {
-        const appointment = await Appointment.findById(req.params.id).populate({
+        const booking = await Booking.findById(req.params.id).populate({
             path: 'coworkingspace',
             select: 'name description tel'
         });
 
-        if(!appointment) {
+        if(!booking) {
             return res.status(404).json({
                 success: false, 
-                message: `No appointment with the id of ${req.params.id}`
+                message: `No booking with the id of ${req.params.id}`
             });
         }
 
         res.status(200).json({
             success: true,
-            data: appointment
+            data: booking
         });
     } catch(err) {
         console.log(err);
         return res.status(500).json({
             success: false,
-            message: "Cannot find Appointment"
+            message: "Cannot find Booking"
         });
     }
 }
 
-exports.addAppointment = async (req, res, next) => {
+exports.addBooking = async (req, res, next) => {
     try {
+
         req.body.coworkingspace = req.params.coworkingspaceId;
         console.log(req.params.coworkingspaceId)
         const coworkingspace = await CoWorkingSpace.findById(req.params.coworkingspaceId);
 
-        if(!coworkingspace) {
+
+        if (!coworkingspace) {
             return res.status(404).json({
-                success: false, 
+                success: false,
                 message: `No coworkingspace with the id of ${req.params.coworkingspaceId}`
             });
         }
-        
+
         req.body.user = req.user.id;
         
-        const existedAppointments = await Appointment.find({user: req.user.id});
-        if(existedAppointments.length >= 3 && req.user.role != 'admin') {
+        const existedBookings = await Booking.find({user: req.user.id});
+        if(existedBookings.length >= 3 && req.user.role != 'admin') {
             return res.status(400).json({
                 success: false,
-                message: `The user with ID ${req.user.id} has already made 3 appointments`
+                message: `The user with ID ${req.user.id} has already made 3 bookings`
             });
         }
         console.log("asd");
-        const appointment = await Appointment.create(req.body);
+        const booking = await Booking.create(req.body);
         
         res.status(200).json({
             success: true,
-            data: appointment
+            data: booking
         });
-        
-    } catch(err) {
-        console.log(err.stack);
+    } catch (err) {
+        console.log(err);
         return res.status(500).json({
             success: false,
-            message: "Cannot create Appointment"
+            message: "Cannot create Booking"
         });
     }
 }
 
-exports.updateAppointment = async (req, res, next) => {
-    try {
-        let appointment = await Appointment.findById(req.params.id);
 
-        if(!appointment) {
+exports.updateBooking = async (req, res, next) => {
+    try {
+        let booking = await Booking.findById(req.params.id);
+
+        if(!booking) {
             return res.status(404).json({
                 success: false, 
-                message: `No appointment with the id of ${req.params.id}`
+                message: `No booking with the id of ${req.params.id}`
             });
         }
 
-        if(appointment.user.toString() !== req.user.id && req.user.role != 'admin') {
+        if(booking.user.toString() !== req.user.id && req.user.role != 'admin') {
             return res.status(401).json({
                 success: false,
                 message: `User ${req.user.id} is not authorized to delete this bootcamp`
             });
         }
 
-        appointment = await Appointment.findByIdAndUpdate(req.params.id, req.body, {
+        booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
         });
 
         res.status(200).json({
             success: true,
-            data: appointment
+            data: booking
         });
     } catch(err) {
         console.log(err);
         return res.status(500).json({
             success: false,
-            message: "Cannot update Appointment"
+            message: "Cannot update Booking"
         });
     }
 }
 
-exports.deleteAppointment = async (req, res, next) => {
+exports.deleteBooking = async (req, res, next) => {
     try {
-        const appointment = await Appointment.findById(req.params.id);
+        const booking = await Booking.findById(req.params.id);
 
-        if(!appointment) {
+        if(!booking) {
             return res.status(404).json({
                 success: false, 
-                message: `No appointment with the id of ${req.params.id}`
+                message: `No booking with the id of ${req.params.id}`
             });
         }
 
-        await Appointment.deleteOne();
+        await Booking.deleteOne();
         
         res.status(200).json({
             success: true,
@@ -164,7 +166,7 @@ exports.deleteAppointment = async (req, res, next) => {
         console.log(err);
         return res.status(500).json({
             success: false,
-            message: "Cannot delete Appointment"
+            message: "Cannot delete Booking"
         });
     }
 }
