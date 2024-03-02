@@ -142,28 +142,3 @@ exports.deleteCoWorkingSpace = async (req, res, next) => {
         });
     }
 };
-
-exports.deleteHospital = async (req, res, next) => {
-    try {
-        const hospital = await Hospital.findById(req.params.id);
-        
-        if(!hospital) {
-            return res.status(400).json({
-                success: false,
-                message: "there's no CWS"
-            });
-        }
-      
-        await hospital.deleteOne();
-        res.status(200).json({
-            success: true, 
-            data: {}
-        });
-
-    } catch(err) {
-        res.status(400).json({
-            success: false,
-            message: "catch err"
-        });
-    }
-};
