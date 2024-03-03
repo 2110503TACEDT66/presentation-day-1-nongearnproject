@@ -7,25 +7,49 @@ rectangle "Co-working space booking" {
   usecase "Register" as UC1
   usecase "Login" as UC2
   usecase "Logout" as UC3
-  usecase "Booking" as UC4
-  usecase "Update booking details" as UC6
-  usecase "Update co-working space details" as UC7
+  usecase "See all co-working space details" as UC5
+  usecase "Update co-working space details" as UC6
+  usecase "Delete co-working space" as UC7
+  usecase "Add new co-working space" as UC8
+  usecase "See booking deatails" as UC9
+  usecase "Update booking details" as UC10
+  usecase "Create new booking" as UC11
+  usecase "Delete booking" as UC12
+  usecase "See top user who book the most" as UC13
 }
 UC1 <. UC2 : include
-UC2 <. UC4 : include
-UC2 <. UC6 : include
-UC2 <. UC7 : include
-UC2 <. UC3 : include
-ad -up-> UC3
-ad -up-> UC4
+' UC2 <. UC3 : include
+' UC2 <. UC5 : include
+' UC2 <. UC6 : include
+' UC2 <. UC7 : include
+' UC2 <. UC8 : include
+' UC2 <. UC9 : include
+' UC2 <. UC10 : include
+' UC2 <. UC11 : include
+' UC2 <. UC12 : include
+' UC2 <. UC13 : include
+
 ad -up-> UC1
+ad -up-> UC2
+ad -up-> UC3
+ad -up-> UC5
+ad -up-> UC6
+ad -up-> UC7
+ad -up-> UC8
+ad -up-> UC9
+ad -up-> UC10
+ad -up-> UC11
+ad -up-> UC12
+ad -up-> UC13
+
 fc --> UC1
 fc --> UC2
 fc --> UC3
-fc --> UC4
-ad -up-> UC6
-fc --> UC6
-ad -up-> UC7
-ad -up-> UC2
+fc --> UC5
+fc --> UC9
+fc --> UC10
+fc --> UC12
+fc --> UC11
+
 @enduml
 
