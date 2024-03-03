@@ -1,0 +1,46 @@
+@startuml
+
+class Appointment {
+    - apptDate: Date
+    - user: ObjectId
+    - coworkingspace: ObjectId
+    - createdAt: Date
+    + getAppointments()
+    + getAppointment()
+    + addAppointment()
+    + updateAppointment()
+    + deleteAppointment()
+}
+
+class CoWorkingSpace {
+    - name: String
+    - address: String
+    - tel: String
+    - open_time: Date
+    - close_time: Date
+    + getCoWorkingSpaces()
+    + getCoWorkingSpace()
+    + createCoWorkingSpace()
+    + updateCoWorkingSpace()
+    + deleteCoWorkingSpace()
+}
+
+class User {
+    - name: String
+    - tel: String
+    - email: String
+    - role: String
+    - password: String
+    - resetPasswordToken: String
+    - resetPasswordExpire: Date
+    - createAt: Date
+    + register()
+    + login()
+    + getMe()
+    + logout()
+}
+
+Appointment "1" *-- "1" CoWorkingSpace : belongs to
+Appointment "1" *-- "1" User : belongs to
+
+@enduml
