@@ -1,5 +1,4 @@
-@startuml class diagram
-
+@startuml 
 class Appointment {
     - apptDate: Date
     - user: ObjectId
