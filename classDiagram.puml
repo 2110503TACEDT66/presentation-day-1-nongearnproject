@@ -1,7 +1,7 @@
 @startuml
 
-class Appointment {
-    - apptDate: Date
+class Booking {
+    - bookingDate: Date
     - user: ObjectId
     - coworkingspace: ObjectId
     - createdAt: Date
@@ -40,7 +40,7 @@ class User {
     + logout()
 }
 
-Appointment "1" *-- "1" CoWorkingSpace : belongs to
-Appointment "1" *-- "1" User : belongs to
+Booking "1" *-- "1" CoWorkingSpace : belongs to
+Booking "1" *-- "1" User : belongs to
 
 @enduml
