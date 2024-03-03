@@ -1,9 +1,11 @@
-@startuml 
-class Appointment {
-    - apptDate: Date
+@startuml
+
+class Booking {
+    - bookingDate: Date
     - user: ObjectId
     - coworkingspace: ObjectId
     - createdAt: Date
+    - countBooking : Number
     + getAppointments()
     + getAppointment()
     + addAppointment()
@@ -22,6 +24,7 @@ class CoWorkingSpace {
     + createCoWorkingSpace()
     + updateCoWorkingSpace()
     + deleteCoWorkingSpace()
+    + getTop1BookingUser()
 }
 
 class User {
@@ -39,7 +42,7 @@ class User {
     + logout()
 }
 
-Appointment "1" *-- "1" CoWorkingSpace : belongs to
-Appointment "1" *-- "1" User : belongs to
+Booking "1" *-- "1" CoWorkingSpace : belongs to
+Booking "1" *-- "1" User : belongs to
 
 @enduml
