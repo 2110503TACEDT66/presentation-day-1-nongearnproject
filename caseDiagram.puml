@@ -1,19 +1,18 @@
 @startuml case diagram
+skinparam actorStyle awesome
 left to right direction
 actor "User" as fc
 actor "Admin" as ad
-rectangle "co-working space booking" {
+rectangle "Co-working space booking" {
   usecase "Register" as UC1
   usecase "Login" as UC2
   usecase "Logout" as UC3
   usecase "Booking" as UC4
-  usecase "Update user details" as UC5
   usecase "Update booking details" as UC6
   usecase "Update co-working space details" as UC7
 }
 UC1 <. UC2 : include
 UC2 <. UC4 : include
-UC2 <. UC5 : include
 UC2 <. UC6 : include
 UC2 <. UC7 : include
 UC2 <. UC3 : include
@@ -24,8 +23,6 @@ fc --> UC1
 fc --> UC2
 fc --> UC3
 fc --> UC4
-fc --> UC5
-ad -up-> UC5
 ad -up-> UC6
 fc --> UC6
 ad -up-> UC7

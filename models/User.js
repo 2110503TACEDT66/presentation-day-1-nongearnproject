@@ -36,13 +36,25 @@ const UserSchema = new mongoose.Schema({
     createAt: {
         type: Date,
         default: Date.now
+    },
+    countBooking:{
+        type : Number,
+        default: 0,
+        required : false
     }
 });
 
 // Encrypt password using bcypt
 UserSchema.pre('save', async function(next) {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    // const salt = await bcrypt.genSalt(10);
+    // this.password = await bcrypt.hash(this.password, salt);
+    // next();
+    if (this.isModified('password') && this.password) {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+    }
+    next();
+    
 });
 
 // Sign JWT and return
