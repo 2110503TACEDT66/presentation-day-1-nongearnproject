@@ -5,6 +5,7 @@ class Booking {
     - user: ObjectId
     - coworkingspace: ObjectId
     - createdAt: Date
+    - countBooking : Number
     + getAppointments()
     + getAppointment()
     + addAppointment()
@@ -23,6 +24,7 @@ class CoWorkingSpace {
     + createCoWorkingSpace()
     + updateCoWorkingSpace()
     + deleteCoWorkingSpace()
+    + getTop1BookingUser()
 }
 
 class User {
