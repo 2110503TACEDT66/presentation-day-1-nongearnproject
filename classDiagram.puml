@@ -47,7 +47,7 @@
 
 ' @enduml
 
-@startuml
+@startuml clas
 left to right direction
 package "Booking"{
     class "<<Application>>\nBookingService" as BookingService{}

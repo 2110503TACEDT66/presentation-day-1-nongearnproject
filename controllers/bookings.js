@@ -72,48 +72,48 @@ exports.getBooking = async (req, res, next) => {
 };
 
 exports.addBooking = async (req, res, next) => {
-  try {
-    req.body.coworkingspace = req.params.coworkingspaceId;
-    console.log(req.params.coworkingspaceId);
-    const coworkingspace = await CoWorkingSpace.findById(
-      req.params.coworkingspaceId
-    );
+    try {
+        req.body.coworkingspace = req.params.coworkingspaceId;
+        console.log(req.params.coworkingspaceId);
+        const coworkingspace = await CoWorkingSpace.findById(
+          req.params.coworkingspaceId
+        );
 
-    if (!coworkingspace) {
-      return res.status(404).json({
-        success: false,
-        message: `No coworkingspace with the id of ${req.params.coworkingspaceId}`,
-      });
+        if (!coworkingspace) {
+          return res.status(404).json({
+            success: false,
+            message: `No coworkingspace with the id of ${req.params.coworkingspaceId}`,
+          });
+        }
+      
+        req.body.user = req.user.id;
+      
+        const existedBookings = await Booking.find({ user: req.user.id });
+        if (existedBookings.length >= 3 && req.user.role != "admin") {
+          return res.status(400).json({
+            success: false,
+            message: `The user with ID ${req.user.id} has already made 3 bookings`,
+          });
+        }
+        const booking = await Booking.create(req.body);
+      
+        // new feature
+        const user = await User.findById(req.user.id);
+        user.countBooking += 1;
+        await user.save();
+        console.log(user);
+      
+        res.status(200).json({
+            success: true,
+            data: booking,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            message: "Cannot create Booking",
+        });
     }
-
-    req.body.user = req.user.id;
-
-    const existedBookings = await Booking.find({ user: req.user.id });
-    if (existedBookings.length >= 3 && req.user.role != "admin") {
-      return res.status(400).json({
-        success: false,
-        message: `The user with ID ${req.user.id} has already made 3 bookings`,
-      });
-    }
-    const booking = await Booking.create(req.body);
-
-    // new feature
-    const user = await User.findById(req.user.id);
-    user.countBooking += 1;
-    await user.save();
-    console.log(user);
-
-    res.status(200).json({
-      success: true,
-      data: booking,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      success: false,
-      message: "Cannot create Booking",
-    });
-  }
 };
 
 exports.updateBooking = async (req, res, next) => {
@@ -153,29 +153,29 @@ exports.updateBooking = async (req, res, next) => {
 };
 
 exports.deleteBooking = async (req, res, next) => {
-  try {
-    const booking = await Booking.findById(req.params.id);
-
-    if (!booking) {
-      return res.status(404).json({
-        success: false,
-        message: `No booking with the id of ${req.params.id}`,
-      });
+    try {
+        const booking = await Booking.findById(req.params.id);
+        
+        if (!booking) {
+          return res.status(404).json({
+            success: false,
+            message: `No booking with the id of ${req.params.id}`,
+          });
+        }
+      
+        await Booking.deleteOne();
+      
+        res.status(200).json({
+          success: true,
+          data: {},
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+          success: false,
+          message: "Cannot delete Booking",
+        });
     }
-
-    await Booking.deleteOne();
-
-    res.status(200).json({
-      success: true,
-      data: {},
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      success: false,
-      message: "Cannot delete Booking",
-    });
-  }
 };
 
 exports.getTop1BookingUser = async (req, res, next) => {
