@@ -1,48 +1,138 @@
+' @startuml
+
+' class Booking {
+'     - bookingDate: Date
+'     - user: ObjectId
+'     - coworkingspace: ObjectId
+'     - createdAt: Date
+'     - countBooking : Number
+'     + getAppointments()
+'     + getAppointment()
+'     + addAppointment()
+'     + updateAppointment()
+'     + deleteAppointment()
+' }
+
+' class CoWorkingSpace {
+'     - name: String
+'     - address: String
+'     - tel: String
+'     - open_time: Date
+'     - close_time: Date
+'     + getCoWorkingSpaces()
+'     + getCoWorkingSpace()
+'     + createCoWorkingSpace()
+'     + updateCoWorkingSpace()
+'     + deleteCoWorkingSpace()
+'     + getTop1BookingUser()
+' }
+
+' class User {
+'     - name: String
+'     - tel: String
+'     - email: String
+'     - role: String
+'     - password: String
+'     - resetPasswordToken: String
+'     - resetPasswordExpire: Date
+'     - createAt: Date
+'     + register()
+'     + login()
+'     + getMe()
+'     + logout()
+' }
+
+' Booking "1" *-- "1" CoWorkingSpace : belongs to
+' Booking "1" *-- "1" User : belongs to
+
+' @enduml
+
 @startuml
+left to right direction
+package "Booking"{
+    class "<<Application>>\nBookingService" as BookingService{}
 
-class Booking {
-    - bookingDate: Date
-    - user: ObjectId
-    - coworkingspace: ObjectId
-    - createdAt: Date
-    - countBooking : Number
-    + getAppointments()
-    + getAppointment()
-    + addAppointment()
-    + updateAppointment()
-    + deleteAppointment()
+    class "<<Resource>>\nBookings" as ResourceBookings{
+        <<GET>> +getBookings():Booking
+        <<POST>> +createBooking():Booking
+    }
+
+    class "<<Resource>>\nBooking" as ResourceBooking {
+        <<GET>> +getBooking(): Booking
+        <<PUT>> +updateBooking(): Booking
+        <<DELETE>> +deleteBooking(): void
+    }
+    class "<<Resource>>\nTop1" as SearchTop1BookingUser {
+        <<GET>> +getTop1BookingUser(): Booking
+    }
+
+    class "<<Representation>>\nBooking" as RepresentationBooking {
+        - bookingDate
+        - user
+        - coworkingspace
+        - createdAt
+        - countBooking
+    }
+
 }
 
-class CoWorkingSpace {
-    - name: String
-    - address: String
-    - tel: String
-    - open_time: Date
-    - close_time: Date
-    + getCoWorkingSpaces()
-    + getCoWorkingSpace()
-    + createCoWorkingSpace()
-    + updateCoWorkingSpace()
-    + deleteCoWorkingSpace()
-    + getTop1BookingUser()
+package "CoWorkingSpace"{
+    class "<<Application>>\nCoWorkingSpace" as CoWorkingSpace{}
+
+    class "<<Resource>>\nCoWorkingSpaces" as ResourceCoWorkingSpaces{
+        <<GET>> +getCoWorkingSpaces():CoWorkingSpace
+        <<POST>> +createCoWorkingSpace():CoWorkingSpace
+    }
+
+    class "<<Resource>>\nCoWorkingSpace" as ResourceCoWorkingSpace {
+        <<GET>> +getCoWorkingSpace(): CoWorkingSpace
+        <<PUT>> +updateCoWorkingSpace(): CoWorkingSpace
+        <<DELETE>> +deleteCoWorkingSpace(): void
+    }
+
+    class "<<Representation>>\nCoWorkingSpace" as RepresentationCoWorkingSpace {
+        - name
+        - address
+        - tel
+        - open_time
+        - close_time
+    }
+
 }
 
-class User {
-    - name: String
-    - tel: String
-    - email: String
-    - role: String
-    - password: String
-    - resetPasswordToken: String
-    - resetPasswordExpire: Date
-    - createAt: Date
-    + register()
-    + login()
-    + getMe()
-    + logout()
+package "Authentication"{
+    class "<<Application>>\nAuthentication" as Authentication{}
+
+    class "<<Resource>>\nAuthentication" as ResourceAuthentication{
+        <<POST>> +login():User
+        <<POST>> +register():User
+        <<GET>> +logout():User
+        <<GET>> +getme():User
+    }
+
+
+    class "<<Representation>>\nAuthentication" as RepresentationAuthentication {
+        - name
+        - tel
+        - email
+        - role
+        - password
+        - resetPasswordToken
+        - resetPasswordExpire
+        - createAt
+    }
+
 }
 
-Booking "1" *-- "1" CoWorkingSpace : belongs to
-Booking "1" *-- "1" User : belongs to
+BookingService ..> ResourceBookings:"/bookings\n<<Path>>"
+ResourceBookings ..> ResourceBooking: "/{bookingId}\n<<Path>>"
+ResourceBooking ..> SearchTop1BookingUser: "/bestUser\n<<Path>>"
+SearchTop1BookingUser ..> RepresentationBooking: "<<use>>"
 
+CoWorkingSpace ..> ResourceCoWorkingSpaces:"/coworkingspace\n<<Path>>"
+ResourceCoWorkingSpaces ..> ResourceCoWorkingSpace: "/{coworkingspaceId}\n<<Path>>"
+ResourceCoWorkingSpace ..> RepresentationCoWorkingSpace: "<<use>>"
+
+Authentication ..> ResourceAuthentication:"/auth\n<<Path>>"
+ResourceAuthentication ..> RepresentationAuthentication: "<<use>>"
 @enduml
