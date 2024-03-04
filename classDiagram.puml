@@ -47,7 +47,7 @@
 
 ' @enduml
 
-@startuml clas
+@startuml Class Diagram
 left to right direction
 package "Booking"{
     class "<<Application>>\nBookingService" as BookingService{}
