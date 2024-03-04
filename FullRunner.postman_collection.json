@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "ed2243a0-fb34-4d32-8b10-23cf9b08519f",
-		"name": "Runner",
+		"_postman_id": "9d964bfd-6f71-4f71-a869-41f0aa2cece8",
+		"name": "FullRunner",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29527746"
 	},
 	"item": [
 		{
-			"name": "UserRunner",
+			"name": "FullRunner",
 			"item": [
 				{
 					"name": "Register",
@@ -529,7 +529,7 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"postman.setNextRequest(null);"
+									"postman.setNextRequest(\"Admin Login\");"
 								],
 								"type": "text/javascript"
 							}
@@ -562,14 +562,9 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "AdminRunner",
-			"item": [
+				},
 				{
-					"name": "Login",
+					"name": "Admin Login",
 					"event": [
 						{
 							"listen": "test",
@@ -581,7 +576,7 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"postman.setNextRequest(\"Get All Bookings\");"
+									"postman.setNextRequest(\"Admin Add Booking\");"
 								],
 								"type": "text/javascript"
 							}
@@ -623,7 +618,75 @@
 					"response": []
 				},
 				{
-					"name": "Get All Bookings",
+					"name": "Admin Add Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200, Booking created\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"const global_bookingID = response.data._id;\r",
+									"\r",
+									"pm.globals.set(\"global_bookingID\", global_bookingID);\r",
+									"\r",
+									"postman.setNextRequest(\"Admin Get All Bookings\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookDate\": \"{{$randomDateFuture}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/coworkingspaces/{{global_CWSID}}/bookings/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"coworkingspaces",
+								"{{global_CWSID}}",
+								"bookings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Get All Bookings",
 					"event": [
 						{
 							"listen": "test",
@@ -634,15 +697,16 @@
 									"});\r",
 									"\r",
 									"const response = pm.response.json();\r",
-									"const index = Math.trunc(Math.random() * response.data.length);\r",
-									"const global_BID = response.data[index]._id;\r",
-									"\r",
-									"pm.globals.set(\"global_BID\", global_BID);\r",
 									"\r",
 									"const booking_count = response.count;\r",
 									"let booking_count_string;\r",
 									"\r",
 									"if (booking_count > 0) {\r",
+									"    const index = Math.trunc(Math.random() * response.data.length);\r",
+									"    const global_BID = response.data[index]._id;\r",
+									"\r",
+									"    pm.globals.set(\"global_BID\", global_BID);\r",
+									"\r",
 									"    if (booking_count === 1) {\r",
 									"        booking_count_string = \"There's only 1 booking\";\r",
 									"    } else {\r",
@@ -658,7 +722,7 @@
 									"    });\r",
 									"}\r",
 									"\r",
-									"postman.setNextRequest(\"Best User\");"
+									"postman.setNextRequest(\"Admin Update Booking\");"
 								],
 								"type": "text/javascript"
 							}
@@ -692,52 +756,7 @@
 					"response": []
 				},
 				{
-					"name": "Best User",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"postman.setNextRequest(\"Update Booking\");"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{URL}}/api/v1/bookings/bestUser",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"bookings",
-								"bestUser"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Booking",
+					"name": "Admin Update Booking",
 					"event": [
 						{
 							"listen": "test",
@@ -747,7 +766,7 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"postman.setNextRequest(\"Delete One Booking\");"
+									"postman.setNextRequest(\"Admin Delete One Booking\");"
 								],
 								"type": "text/javascript"
 							}
@@ -791,7 +810,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete One Booking",
+					"name": "Admin Delete One Booking",
 					"event": [
 						{
 							"listen": "test",
@@ -834,6 +853,29 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}
