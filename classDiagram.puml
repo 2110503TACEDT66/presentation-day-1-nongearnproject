@@ -125,11 +125,12 @@ package "Authentication"{
 }
 
 BookingService ..> ResourceBookings:"/bookings\n<<Path>>"
+BookingService ..> SearchTop1BookingUser: "/bestUser\n<<Path>>"
 ResourceBookings ..> ResourceBooking: "/{bookingId}\n<<Path>>"
-ResourceBooking ..> SearchTop1BookingUser: "/bestUser\n<<Path>>"
+ResourceBooking ..> RepresentationBooking: "<<use>>"
 SearchTop1BookingUser ..> RepresentationBooking: "<<use>>"
 
-CoWorkingSpace ..> ResourceCoWorkingSpaces:"/coworkingspace\n<<Path>>"
+CoWorkingSpace ..> ResourceCoWorkingSpaces:"/coworkingspaces\n<<Path>>"
 ResourceCoWorkingSpaces ..> ResourceCoWorkingSpace: "/{coworkingspaceId}\n<<Path>>"
 ResourceCoWorkingSpace ..> RepresentationCoWorkingSpace: "<<use>>"
 
