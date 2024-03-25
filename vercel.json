@@ -1,5 +1,4 @@
 {
-    "vercel": 2,
     "name": "car-rental-app",
     "builds": [
         {
