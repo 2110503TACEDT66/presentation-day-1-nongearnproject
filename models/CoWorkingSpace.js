@@ -22,6 +22,9 @@ const CoWorkingSpaceSchema = new mongoose.Schema({
     close_time: {
         type: Date,
         required: [true, 'Please add a close time']
+    },
+    image: {
+        type: String
     }
 }, {
     toJSON : {virtuals: true},
